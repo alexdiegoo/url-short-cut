@@ -1,0 +1,16 @@
+org: alexddev
+service: url-short-cut
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  memorySize: 128
+  architecture: arm64
+
+functions:
+  createShortCutURL:
+    handler: src/functions/createShortCutURL.handler
+    events:
+      - httpApi:
+          method: post
+          path: /shortcut
