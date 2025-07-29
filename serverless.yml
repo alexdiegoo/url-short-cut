@@ -1,16 +1,41 @@
 org: alexddev
 service: url-short-cut
 
+plugins:
+  - serverless-offline
+
+useDotenv: true
+
 provider:
   name: aws
   runtime: nodejs20.x
   memorySize: 128
-  architecture: arm64
+  architecture: x86_64
+  environment:
+    DATABASE_URL: ${env:DATABASE_URL}
+    SHORT_URL_BASE: ${env:SHORT_URL_BASE}
+    PRISMA_CLI_BINARY_TARGETS: ${env:PRISMA_CLI_BINARY_TARGETS}
 
 functions:
   createShortCutURL:
-    handler: src/functions/createShortCutURL.handler
+    handler: src/functions/shorten.handler
     events:
       - httpApi:
           method: post
-          path: /shortcut
+          path: /shorten
+  createUser:
+    handler: src/functions/createUser.handler
+    events:
+      - httpApi:
+          method: post
+          path: /users
+
+package:
+  individually: true
+  patterns:
+    - "!node_modules/.prisma/client/libquery_engine-*"
+    - "node_modules/.prisma/client/libquery_engine-rhel-*"
+    - "!node_modules/prisma/libquery_engine-*"
+    - "!node_modules/@prisma/engines/**"
+    - "node_modules/.prisma/client/schema.prisma"
+    - "generated/**"
