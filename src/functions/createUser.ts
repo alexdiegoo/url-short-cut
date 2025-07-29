@@ -15,16 +15,13 @@ const createUserSchema = z.object({
     email: z.email(),
 })
 
-type CreateUserRequest = z.infer<typeof createUserSchema>
-
 export async function handler(event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> {
     try {
         if (!event.body) {
             return badRequest('Request body is required');
         }
 
-        const body = JSON.parse(event.body) as CreateUserRequest;
-        const parsedBody = createUserSchema.safeParse(body);
+        const parsedBody = createUserSchema.safeParse(JSON.parse(event.body));
 
         if (!parsedBody.success) {
             return badRequest(parsedBody.error.issues)
@@ -32,7 +29,7 @@ export async function handler(event: APIGatewayProxyEventV2): Promise<APIGateway
 
         const userAlreadyExists = await prisma.user.findUnique({
             where: {
-                email: body.email,
+                email: parsedBody.data.email,
             }
         });
 
@@ -42,8 +39,8 @@ export async function handler(event: APIGatewayProxyEventV2): Promise<APIGateway
 
         const user = await prisma.user.create({
             data: {
-                name: body.username,
-                email: body.email,
+                name: parsedBody.data.username,
+                email: parsedBody.data.email,
             },
         });
 

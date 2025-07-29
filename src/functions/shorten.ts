@@ -17,16 +17,13 @@ const ShortenRequestSchema = z.object({
     userId: z.string().min(1),
 });
 
-type ShortenRequest = z.infer<typeof ShortenRequestSchema>;
-
 export async function handler(event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> {
     try {
         if (!event.body) {
             return badRequest('Request body is required');
         }
 
-        const body = JSON.parse(event.body) as ShortenRequest;
-        const parsedBody = ShortenRequestSchema.safeParse(body);
+        const parsedBody = ShortenRequestSchema.safeParse(JSON.parse(event.body));
         if (!parsedBody.success) {
             return badRequest(parsedBody.error.issues);
         }
@@ -34,8 +31,8 @@ export async function handler(event: APIGatewayProxyEventV2): Promise<APIGateway
         const shorten = await prisma.url.create({
             data: {
                 id: nanoid(10),
-                originalUrl: body.url,
-                userId: body.userId,
+                originalUrl: parsedBody.data.url,
+                userId: parsedBody.data.userId,
             }
         });
 
