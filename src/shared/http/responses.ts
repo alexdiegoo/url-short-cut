@@ -37,3 +37,14 @@ export function createdResponse(data: any): APIGatewayProxyResultV2 {
         },
     };
 }
+
+export function redirectResponse(location: string): APIGatewayProxyResultV2 {
+    return {
+        statusCode: 302,
+        headers: {
+            'Location': location,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: 'Redirecting...' }),
+    };
+}

@@ -29,6 +29,12 @@ functions:
       - httpApi:
           method: post
           path: /users
+  redirect:
+    handler: src/functions/redirect.handler
+    events:
+      - httpApi:
+          method: get
+          path: /{shortUrlId}
 
 package:
   individually: true
