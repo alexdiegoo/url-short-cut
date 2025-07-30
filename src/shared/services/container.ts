@@ -1,4 +1,4 @@
 import { IGeoLocationService } from "./GeoLocationService/IGeoLocationService";
-import { IpapiGeoLocationService } from "./GeoLocationService/implementations/IpapiGeoLocationService";
+import { IInfoGeoLocationService } from "./GeoLocationService/implementations/IpInfoGeoLocationService";
 
-export const geoLocationService: IGeoLocationService = new IpapiGeoLocationService();
+export const geoLocationService: IGeoLocationService = new IInfoGeoLocationService();

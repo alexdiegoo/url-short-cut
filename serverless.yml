@@ -8,13 +8,15 @@ useDotenv: true
 
 provider:
   name: aws
-  runtime: nodejs20.x
-  memorySize: 128
+  runtime: nodejs22.x
+  memorySize: 512
+  timeout: 30
   architecture: x86_64
   environment:
     DATABASE_URL: ${env:DATABASE_URL}
     SHORT_URL_BASE: ${env:SHORT_URL_BASE}
     PRISMA_CLI_BINARY_TARGETS: ${env:PRISMA_CLI_BINARY_TARGETS}
+    IPINFO_API_KEY: ${env:IPINFO_API_KEY}
 
 functions:
   createShortCutURL:
