@@ -10,9 +10,11 @@ import {
 } from '../shared/http/responses';
 import { getErrorMessage } from '../shared/utils/getErrorMessage';
 
+import { geoLocationService } from '../shared/services/container';
+
 const redirectSchema = z.string().nonempty();
 
-export async function handler({ pathParameters }: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> {
+export async function handler({ pathParameters, requestContext }: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> {
     try {
         const shortUrlId = redirectSchema.safeParse(pathParameters?.shortUrlId);
 
@@ -27,6 +29,24 @@ export async function handler({ pathParameters }: APIGatewayProxyEventV2): Promi
         if (!url) {
             return badRequest('Short URL not found');
         }
+
+        const ip = requestContext.http.sourceIp;
+        const geolocation = await geoLocationService.getGeoLocation(ip);
+
+        await prisma.click.create({
+            data: {
+                urlId: url.id,
+                country: geolocation.country,
+                regionCode: geolocation.regionCode,
+                postalCode: geolocation.postalCode,
+                city: geolocation.city,
+                latitude: geolocation.latitude,
+                longitude: geolocation.longitude,
+                userAgent: requestContext.http.userAgent || '',
+                timezone: geolocation.timezone,
+            }
+        });
+
 
         return redirectResponse(url.originalUrl);
     } catch (error) {
