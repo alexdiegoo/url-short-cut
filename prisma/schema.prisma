@@ -44,7 +44,6 @@ model Click {
   
   userAgent String?
   country   String?
-  regionCode String?
   city      String?
   latitude  String?
   longitude String?

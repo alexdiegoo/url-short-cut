@@ -18,7 +18,6 @@ export class IInfoGeoLocationService implements IGeoLocationService {
             const data = await response.json();
             return {
                 city: data.city || '',
-                regionCode: '',
                 country: data.country || '',
                 latitude: data.loc.split(',')[0] || '',
                 longitude: data.loc.split(',')[1] || '',

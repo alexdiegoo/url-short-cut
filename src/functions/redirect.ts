@@ -37,7 +37,6 @@ export async function handler({ pathParameters, requestContext }: APIGatewayProx
             data: {
                 urlId: url.id,
                 country: geolocation.country,
-                regionCode: geolocation.regionCode,
                 postalCode: geolocation.postalCode,
                 city: geolocation.city,
                 latitude: geolocation.latitude,

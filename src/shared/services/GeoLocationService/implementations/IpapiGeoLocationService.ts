@@ -13,7 +13,6 @@ export class IpapiGeoLocationService implements IGeoLocationService {
             const data = await response.json();
             return {
                 city: data.city || '',
-                regionCode: data.region_code || '',
                 country: data.country_name || '',
                 latitude: data.latitude || '',
                 longitude: data.longitude || '',
