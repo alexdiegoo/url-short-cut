@@ -37,6 +37,12 @@ functions:
       - httpApi:
           method: get
           path: /{shortUrlId}
+  deleteShortURL:
+    handler: src/functions/deleteShortUrl.handler
+    events:
+      - httpApi:
+          method: delete
+          path: /shorten/{shortUrlId}
 
 package:
   individually: true

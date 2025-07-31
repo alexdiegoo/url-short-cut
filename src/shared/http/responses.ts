@@ -48,3 +48,12 @@ export function redirectResponse(location: string): APIGatewayProxyResultV2 {
         body: JSON.stringify({ message: 'Redirecting...' }),
     };
 }
+
+export function deleteResponse(): APIGatewayProxyResultV2 {
+    return {
+        statusCode: 204,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
+}
