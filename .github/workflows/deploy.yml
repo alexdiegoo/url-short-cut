@@ -25,7 +25,7 @@ jobs:
         run: npm install -g serverless
       
       - name: Serverless framework login
-        run: serverless login --token ${{ secrets.SERVERLESS_TOKEN }}
+        run: serverless login
       
       - name: Deploy to Serverless
         env:
