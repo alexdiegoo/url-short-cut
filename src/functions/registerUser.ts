@@ -2,6 +2,7 @@ import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda";
 
 import { prisma } from "../database";
 import * as z from "zod";
+import bcrypt from "bcryptjs";
 
 import {
     createdResponse, 
@@ -10,18 +11,21 @@ import {
 } from '../shared/http/responses';
 import { getErrorMessage } from '../shared/utils/getErrorMessage';
 
-const createUserSchema = z.object({
+const registerUserSchema = z.object({
     username: z.string().min(8).max(20),
     email: z.email(),
+    password: z.string().min(8).max(50),
 })
 
-export async function handler(event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> {
+const SALT_ROUNDS = 10;
+
+export async function handler({ body }: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> {
     try {
-        if (!event.body) {
+        if (!body) {
             return badRequest('Request body is required');
         }
 
-        const parsedBody = createUserSchema.safeParse(JSON.parse(event.body));
+        const parsedBody = registerUserSchema.safeParse(JSON.parse(body));
 
         if (!parsedBody.success) {
             return badRequest(parsedBody.error.issues)
@@ -37,10 +41,13 @@ export async function handler(event: APIGatewayProxyEventV2): Promise<APIGateway
             return badRequest('User with this email already exists');
         }
 
+        const hashedPassword = await bcrypt.hash(parsedBody.data.password, SALT_ROUNDS);
+
         const user = await prisma.user.create({
             data: {
                 name: parsedBody.data.username,
                 email: parsedBody.data.email,
+                password: hashedPassword,
             },
         });
 

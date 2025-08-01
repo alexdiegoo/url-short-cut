@@ -11,6 +11,8 @@
   "license": "ISC",
   "devDependencies": {
     "@types/aws-lambda": "^8.10.152",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.1.0",
     "prisma": "^6.12.0",
     "serverless-offline": "^14.4.0",
@@ -19,6 +21,8 @@
   },
   "dependencies": {
     "@prisma/client": "^6.12.0",
+    "bcryptjs": "^3.0.2",
+    "jsonwebtoken": "^9.0.2",
     "nanoid": "^5.1.5",
     "zod": "^4.0.13"
   }

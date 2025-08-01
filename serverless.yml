@@ -18,18 +18,24 @@ provider:
     IPINFO_API_KEY: ${env:IPINFO_API_KEY}
 
 functions:
+  registerUser:
+    handler: src/functions/registerUser.handler
+    events:
+      - httpApi:
+          method: post
+          path: /register
+  loginUser:
+    handler: src/functions/loginUser.handler
+    events:
+      - httpApi:
+          method: post 
+          path: /login
   createShortCutURL:
     handler: src/functions/shorten.handler
     events:
       - httpApi:
           method: post
           path: /shorten
-  createUser:
-    handler: src/functions/createUser.handler
-    events:
-      - httpApi:
-          method: post
-          path: /users
   redirect:
     handler: src/functions/redirect.handler
     events:
