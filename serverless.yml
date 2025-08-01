@@ -14,7 +14,6 @@ provider:
   architecture: x86_64
   environment:
     DATABASE_URL: ${env:DATABASE_URL}
-    SHORT_URL_BASE: ${env:SHORT_URL_BASE}
     PRISMA_CLI_BINARY_TARGETS: ${env:PRISMA_CLI_BINARY_TARGETS}
     IPINFO_API_KEY: ${env:IPINFO_API_KEY}
 

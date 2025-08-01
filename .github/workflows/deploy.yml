@@ -27,7 +27,6 @@ jobs:
       - name: Deploy to Serverless
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          SHORT_URL_BASE: ''
           IPINFO_API_KEY: ${{ secrets.IPINFO_API_KEY }}
           PRISMA_CLI_BINARY_TARGETS: native,rhel-openssl-1.0.x
           SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}

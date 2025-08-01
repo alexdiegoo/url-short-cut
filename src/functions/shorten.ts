@@ -38,7 +38,6 @@ export async function handler(event: APIGatewayProxyEventV2): Promise<APIGateway
 
         return createdResponse({
             id: shorten.id,
-            shortUrl: `${process.env.SHORT_URL_BASE}/${shorten.id}`,
             originalUrl: shorten.originalUrl,
         });
     } catch (error) {
