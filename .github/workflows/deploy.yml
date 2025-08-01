@@ -26,6 +26,9 @@ jobs:
       
       - name: Deploy to Serverless
         env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SHORT_URL_BASE: ''
+          PRISMA_CLI_BINARY_TARGETS: native,rhel-openssl-1.0.x
           SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
