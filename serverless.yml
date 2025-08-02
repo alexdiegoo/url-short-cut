@@ -25,7 +25,6 @@ provider:
         functionName: authorizerFun
         resultTtlInSeconds: 300
         enableSimpleResponses: true
-        payloadVersion: 2.0
 
 functions:
   authorizerFun:
