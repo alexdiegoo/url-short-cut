@@ -63,6 +63,14 @@ functions:
           path: /shorten/{shortUrlId}
           authorizer:
             name: customAuthorizer
+  listShortURLs:
+    handler: src/functions/listShortUrls.handler
+    events:
+      - httpApi:
+          method: get
+          path: /shorten
+          authorizer:
+            name: customAuthorizer
 
 package:
   individually: true

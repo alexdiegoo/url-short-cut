@@ -57,3 +57,13 @@ export function deleteResponse(): APIGatewayProxyResultV2 {
         },
     };
 }
+
+export function okResponse(data: any): APIGatewayProxyResultV2 {
+    return {
+        statusCode: 200,
+        body: JSON.stringify(data),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
+}
