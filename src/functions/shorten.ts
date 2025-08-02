@@ -1,4 +1,4 @@
-import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from 'aws-lambda';
+import { APIGatewayEvent, APIGatewayProxyResultV2 } from 'aws-lambda';
 
 import { nanoid } from 'nanoid';
 import { prisma } from '../database';
@@ -14,16 +14,15 @@ import { getErrorMessage } from '../shared/utils/getErrorMessage';
 
 const ShortenRequestSchema = z.object({
     url: z.url().nonempty(),
-    userId: z.string().min(1),
 });
 
-export async function handler(event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> {
+export async function handler({ body, requestContext }: APIGatewayEvent): Promise<APIGatewayProxyResultV2> {
     try {
-        if (!event.body) {
+        if (!body) {
             return badRequest('Request body is required');
         }
 
-        const parsedBody = ShortenRequestSchema.safeParse(JSON.parse(event.body));
+        const parsedBody = ShortenRequestSchema.safeParse(JSON.parse(body));
         if (!parsedBody.success) {
             return badRequest(parsedBody.error.issues);
         }
@@ -32,7 +31,7 @@ export async function handler(event: APIGatewayProxyEventV2): Promise<APIGateway
             data: {
                 id: nanoid(10),
                 originalUrl: parsedBody.data.url,
-                userId: parsedBody.data.userId,
+                userId: requestContext.authorizer?.lambda.userId
             }
         });
 

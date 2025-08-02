@@ -16,8 +16,20 @@ provider:
     DATABASE_URL: ${env:DATABASE_URL}
     PRISMA_CLI_BINARY_TARGETS: ${env:PRISMA_CLI_BINARY_TARGETS}
     IPINFO_API_KEY: ${env:IPINFO_API_KEY}
+    JWT_SECRET: ${env:JWT_SECRET}
+  httpApi:
+    authorizers:
+      customAuthorizer:
+        type: request
+        identitySource: $request.header.Authorization
+        functionName: authorizerFun
+        resultTtlInSeconds: 300
+        enableSimpleResponses: true
+        payloadVersion: 2.0
 
 functions:
+  authorizerFun:
+    handler: src/functions/authorizer.handler
   registerUser:
     handler: src/functions/registerUser.handler
     events:
@@ -36,6 +48,8 @@ functions:
       - httpApi:
           method: post
           path: /shorten
+          authorizer:
+            name: customAuthorizer
   redirect:
     handler: src/functions/redirect.handler
     events:
@@ -48,6 +62,8 @@ functions:
       - httpApi:
           method: delete
           path: /shorten/{shortUrlId}
+          authorizer:
+            name: customAuthorizer
 
 package:
   individually: true
