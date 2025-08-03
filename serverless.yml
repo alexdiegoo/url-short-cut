@@ -71,6 +71,14 @@ functions:
           path: /shorten
           authorizer:
             name: customAuthorizer
+  getShortURLAnalytics:
+    handler: src/functions/getShortUrlAnalytics.handler
+    events:
+      - httpApi:
+          method: get
+          path: /analytics/{shortUrlId}
+          authorizer:
+            name: customAuthorizer
 
 package:
   individually: true

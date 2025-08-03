@@ -2,6 +2,7 @@ import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from 'aws-lambda';
 
 import { prisma } from '../database';
 import * as z from 'zod';
+import { UAParser } from 'ua-parser-js';
 
 import {
     internalError,
@@ -33,6 +34,9 @@ export async function handler({ pathParameters, requestContext }: APIGatewayProx
         const ip = requestContext.http.sourceIp;
         const geolocation = await geoLocationService.getGeoLocation(ip);
 
+        const userAgent = requestContext.http.userAgent || '';
+        const { browser, os } = UAParser(userAgent);
+
         await prisma.click.create({
             data: {
                 urlId: url.id,
@@ -41,8 +45,9 @@ export async function handler({ pathParameters, requestContext }: APIGatewayProx
                 city: geolocation.city,
                 latitude: geolocation.latitude,
                 longitude: geolocation.longitude,
-                userAgent: requestContext.http.userAgent || '',
-                timezone: geolocation.timezone,
+                userAgent,
+                browser: browser.name,
+                os: os.name
             }
         });
 

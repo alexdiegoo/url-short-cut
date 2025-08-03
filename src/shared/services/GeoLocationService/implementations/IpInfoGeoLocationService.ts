@@ -19,8 +19,8 @@ export class IInfoGeoLocationService implements IGeoLocationService {
             return {
                 city: data.city || '',
                 country: data.country || '',
-                latitude: data.loc.split(',')[0] || '',
-                longitude: data.loc.split(',')[1] || '',
+                latitude: data?.loc?.split(',')[0] || '',
+                longitude: data?.loc?.split(',')[1] || '',
                 timezone: data.timezone || '',
                 postalCode: data.postal || '',
             };

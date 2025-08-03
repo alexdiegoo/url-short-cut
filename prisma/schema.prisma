@@ -45,11 +45,12 @@ model Click {
   urlId     String
   
   userAgent String?
+  os        String?
+  browser   String?
   country   String?
   city      String?
   latitude  String?
   longitude String?
-  timezone  String?
   postalCode String?
   createdAt DateTime @default(now())
 
